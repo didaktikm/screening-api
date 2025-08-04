@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include (print .Chart.Name ".fullname") . }}
+  labels:
+    {{- include (print .Chart.Name ".labels") . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type | default "ClusterIP" }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+  selector:
+    {{- include (print .Chart.Name ".selectorLabels") . | nindent 4 }}
